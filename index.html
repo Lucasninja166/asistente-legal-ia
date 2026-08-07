@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asistente Legal IA</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f7f6; padding: 40px; }
+        .contenedor-principal { max-width: 600px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h1 { color: #2c3e50; text-align: center; }
+        .caja-carga { border: 2px dashed #3498db; padding: 20px; text-align: center; border-radius: 6px; cursor: pointer; background: #eef2f7; }
+        .boton-analizar { display: block; width: 100%; background: #2ecc71; color: white; border: none; padding: 12px; margin-top: 20px; font-size: 16px; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        .boton-analizar:hover { background: #27ae60; }
+        .resultado-analisis { margin-top: 30px; padding: 15px; background: #fffde7; border-left: 5px solid #f1c40f; border-radius: 4px; display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="contenedor-principal">
+        <h1>Auditor de Contratos IA</h1>
+        <p>Sube el texto de tu contrato en formato .txt para buscar cláusulas de riesgo.</p>
+        
+        <div class="caja-carga">
+            <input type="file" id="archivo-contrato" accept=".txt">
+        </div>
+
+        <button class="boton-analizar" onclick="procesarContrato()">Analizar Documento</button>
+
+        <div id="resultado" class="resultado-analisis">
+            <h3>Análisis de Riesgo de la IA:</h3>
+            <p id="texto-resultado">Esperando documento...</p>
+        </div>
+    </div>
+
+    <script>
+        async function procesarContrato() {
+            const inputArchivo = document.getElementById('archivo-contrato');
+            const cajaResultado = document.getElementById('resultado');
+            const textoResultado = document.getElementById('texto-resultado');
+
+            if (!inputArchivo.files || inputArchivo.files.length === 0) {
+                alert("Por favor, selecciona un archivo .txt con el contrato primero.");
+                return;
+            }
+
+            cajaResultado.style.display = 'block';
+            textoResultado.innerText = "Leyendo documento y conectando con la IA...";
+
+            const archivo = inputArchivo.files[0];
+            const lector = new FileReader();
+
+            lector.onload = async function(evento) {
+                const contenidoTexto = evento.target.result;
+
+                try {
+                    // DIRECCIÓN CORREGIDA CON COMILLAS Y PUERTO 8000
+                    const respuesta = await fetch('http://localhost:8000/analizar-contrato', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ texto: contenidoTexto })
+                    });
+
+                    const datos = await respuesta.json();
+                    
+                    if (respuesta.ok) {
+                        textoResultado.innerText = datos.analisis;
+                    } else {
+                        textoResultado.innerText = "Error en el servidor: " + datos.detail;
+                    }
+
+                } catch (error) {
+                    textoResultado.innerText = "No se pudo conectar con el servidor de Python. Asegúrate de que esté encendido.";
+                    console.error(error);
+                }
+            };
+
+            lector.readAsText(archivo);
+        }
+    </script>
+
+</body>
+</html>
