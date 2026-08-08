@@ -16,7 +16,8 @@ app.add_middleware(
 class ContratoEntrada(BaseModel):
     texto: str
 
-@app.post("/analizar-contrato")
+# Acá ya tiene puesta la barra final exacta que necesita Render
+@app.post("/analizar-contrato/")
 async def analizar_documento(contrato: ContratoEntrada):
     texto_usuario = contrato.texto.lower()
     
@@ -33,3 +34,4 @@ async def analizar_documento(contrato: ContratoEntrada):
         analisis_simulado = f"Documento recibido con éxito en la nube: '{contrato.texto}'. ¡Tu sistema gratis funciona perfecto!"
         
     return {"analisis": analisis_simulado}
+  
