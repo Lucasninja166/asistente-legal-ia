@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auditoría IA</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: #f4f6f9;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+        h2 {
+            color: #1e3a8a;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+            resize: none;
+            box-sizing: border-box;
+            outline: none;
+            font-family: inherit;
+        }
+        textarea:focus {
+            border-color: #3b82f6;
+        }
+        button {
+            background-color: #009ee3; /* Azul oficial de Mercado Pago */
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 15px;
+            transition: background 0.2s;
+        }
+        button:hover {
+            background-color: #007eb5;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Auditoría de Prompt</h2>
+
+    <textarea id="texto" rows="10" placeholder="Escribe o pega tu prompt aquí para auditar..."></textarea>
+
+    <button id="btnPagar">
+        Iniciar auditoría
+    </button>
+</div>
+
+<script>
+document.getElementById("btnPagar").addEventListener("click", function(){
+
+    const texto = document.getElementById("texto").value;
+
+    if(texto.trim() == ""){
+        alert("Escribí un texto.");
+        return;
+    }
+
+    // Guarda el texto localmente en el navegador del cliente
+    localStorage.setItem("textoAuditoria", texto);
+
+    // Redirección directa a tu link de cobro de Mercado Pago
+    window.location.href = "https://mercadopago.com.ar";
+});
+</script>
+
+</body>
+</html>
