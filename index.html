@@ -1,207 +1,41 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Asistente de Auditoría IA</title>
-    <style>
-        :root {
-            --bg-color: #0d1117;
-            --card-bg: #161b22;
-            --text-color: #c9d1d9;
-            --accent-color: #58a6ff;
-            --border-color: #30363d;
-            --success-color: #238636;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 800px;
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 30px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-        }
-
-        h1 {
-            color: #ffffff;
-            margin-top: 0;
-            font-size: 24px;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 10px;
-        }
-
-        p {
-            font-size: 14px;
-            color: #8b949e;
-        }
-
-        textarea {
-            width: 100%;
-            height: 200px;
-            background-color: var(--bg-color);
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            color: var(--text-color);
-            padding: 12px;
-            box-sizing: border-box;
-            resize: vertical;
-            font-family: inherit;
-            font-size: 14px;
-            margin-top: 15px;
-        }
-
-        textarea:focus {
-            outline: none;
-            border-color: var(--accent-color);
-            box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.3);
-        }
-
-        button {
-            background-color: var(--success-color);
-            color: #ffffff;
-            border: 1px solid rgba(240,246,252,0.1);
-            border-radius: 6px;
-            padding: 10px 20px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 15px;
-            width: 100%;
-            transition: background-color 0.2s;
-        }
-
-        button:hover {
-            background-color: #2ea44f;
-        }
-
-        button:disabled {
-            background-color: #216e39;
-            color: #8b949e;
-            cursor: not-allowed;
-        }
-
-        .spinner {
-            display: none;
-            text-align: center;
-            margin-top: 15px;
-            font-style: italic;
-            color: var(--accent-color);
-        }
-
-        .resultado-box {
-            margin-top: 25px;
-            padding: 15px;
-            background-color: var(--bg-color);
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            display: none;
-            white-space: pre-wrap;
-            line-height: 1.6;
-        }
-
-        .error-box {
-            margin-top: 15px;
-            padding: 12px;
-            background-color: rgba(248, 81, 73, 0.1);
-            border: 1px solid #f85149;
-            border-radius: 6px;
-            color: #f85149;
-            display: none;
-            font-size: 14px;
-        }
-    </style>
+<meta charset="UTF-8">
+<title>Auditoría IA</title>
 </head>
+
 <body>
 
-    <div class="container">
-        <h1>Asistente de Auditoría Avanzada 🤖</h1>
-        <p>Ingresa los datos correspondientes en el cuadro inferior para que el sistema realice la verificación con Inteligencia Artificial.</p>
-        
-        <textarea id="contratoTexto" placeholder="Pega el texto aquí..."></textarea>
-        
-        <button id="btnAnalizar" onclick="enviarContrato()">Iniciar Auditoría</button>
-        
-        <div id="loader" class="spinner">🔄 Procesando la consulta en el servidor, por favor espera...</div>
-        <div id="errorMensaje" class="error-box"></div>
-        
-        <div id="resultado" class="resultado-box"></div>
-    </div>
+<h2>Auditoría de Prompt</h2>
 
-    <script>
-        async function enviarContrato() {
-            const texto = document.getElementById("contratoTexto").value;
-            const btn = document.getElementById("btnAnalizar");
-            const loader = document.getElementById("loader");
-            const resultadoDiv = document.getElementById("resultado");
-            const errorDiv = document.getElementById("errorMensaje");
+<textarea id="texto" rows="10" cols="60"></textarea>
 
-            resultadoDiv.style.display = "none";
-            errorDiv.style.display = "none";
+<br><br>
 
-            if (!texto.trim()) {
-                errorDiv.innerText = "Por favor, escribe o pega la información primero.";
-                errorDiv.style.display = "block";
-                return;
-            }
+<button id="btnPagar">
+Iniciar auditoría
+</button>
 
-            btn.disabled = true;
-            loader.style.display = "block";
+<script>
 
-            // Enlaces con tus credenciales de Render y Mercado Pago
-            const LINK_MERCADOPAGO = "https://mercadopago.com.ar";
-            const RENDER_URL = "https://onrender.com";
+document.getElementById("btnPagar").addEventListener("click", function(){
 
-            try {
-                const respuesta = await fetch(RENDER_URL, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ texto: texto })
-                });
+    const texto = document.getElementById("texto").value;
 
-                const datos = await respuesta.json();
+    if(texto.trim()==""){
+        alert("Escribí un texto.");
+        return;
+    }
 
-                if (!respuesta.ok) {
-                    throw new Error(datos.detail || "Error en el servidor de Render.");
-                }
+    localStorage.setItem("textoAuditoria",texto);
 
-                resultadoDiv.innerHTML = `
-                    <div style="text-align: center; padding: 10px;">
-                        <h3 style="color: #58a6ff;">🔍 ¡Auditoría Lista en Servidor!</h3>
-                        <p style="color: #8b949e;">El motor de IA ya procesó la consulta con éxito.</p>
-                        <p style="color: #ff7b72; font-weight: bold; margin: 15px 0;">Para destrabar el reporte completo en pantalla, abona el servicio:</p>
-                        
-                        <a href="${LINK_MERCADOPAGO}" target="_blank" onclick="document.getElementById('bloqueOculto').style.display='block'" style="display: inline-block; background-color: #009ee3; color: white; padding: 14px 28px; font-weight: bold; border-radius: 6px; text-decoration: none; margin-bottom: 15px;">
-                            💳 Abonar con Mercado Pago
-                        </a>
+    // Link de Mercado Pago
+    window.location.href="https://mpago.la/TU_LINK";
 
-                        <div id="bloqueOculto" style="display: none; background-color: #21262d; padding: 15px; border-radius: 6px; margin-top: 15px; border: 1px solid #30363d;">
-                            <p style="color: #56d364; font-weight: bold; margin-top: 0;">✅ ¡Pago verificado! Aquí tienes el informe técnico:</p>
-                            <p style="white-space: pre-wrap; text-align: left; color: #c9d1d9; font-size: 14px; line-height: 1.6;">${datos.analisis}</p>
-                        </div>
-                    </div>
-                `;
-                resultadoDiv.style.display = "block";
+});
 
-            } catch (error) {
-                errorDiv.innerText = "Hubo un error al procesar: " + error.message;
-                errorDiv.style.display = "block";
-            } finally {
-                btn.disabled = false;
-                loader.style.display = "none";
-            }
-        }
-    </script>
+</script>
+
 </body>
 </html>
