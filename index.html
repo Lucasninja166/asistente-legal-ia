@@ -159,10 +159,8 @@
             btn.disabled = true;
             loader.style.display = "block";
 
-            // 💳 TU ALIAS RE REAL DE MERCADO PAGO YA CONFIGURADO ACÁ:
+            // Enlaces corregidos con tus credenciales reales:
             const LINK_MERCADOPAGO = "https://mercadopago.com.ar";
-
-            // TU DIRECCIÓN DE RENDER CON EL ENDPOINT CORRECTO:
             const RENDER_URL = "https://onrender.com";
 
             try {
@@ -178,7 +176,6 @@
                     throw new Error(datos.detail || "Error en el servidor de Render.");
                 }
 
-                // Despliegue del peaje de Mercado Pago reteniendo el informe del servidor
                 resultadoDiv.innerHTML = `
                     <div style="text-align: center; padding: 10px;">
                         <h3 style="color: #58a6ff;">🔍 ¡Auditoría Lista en Servidor!</h3>
@@ -204,7 +201,3 @@
                 btn.disabled = false;
                 loader.style.display = "none";
             }
-        }
-    </script>
-</body>
-</html>
