@@ -10,7 +10,7 @@
             background-color: #f4f6f9;
             color: #333;
             display: flex;
-            justify-content: center;
+            justify-content center;
             align-items: center;
             height: 100vh;
             margin: 0;
@@ -72,9 +72,10 @@
         Iniciar auditoría
     </button>
 </div>
-
 <script>
-document.getElementById("btnPagar").addEventListener("click", function(){
+document.getElementById("btnPagar").addEventListener("click", function(e){
+    // 1. Frenamos el viaje rápido a Mercado Pago por un milisegundo
+    e.preventDefault();
 
     const texto = document.getElementById("texto").value;
 
@@ -83,11 +84,13 @@ document.getElementById("btnPagar").addEventListener("click", function(){
         return;
     }
 
-    // Guarda el texto localmente en el navegador del cliente
+    // 2. Aseguramos el guardado del texto en la memoria de la compu
     localStorage.setItem("textoAuditoria", texto);
 
-    // Redirección directa a tu link de cobro de Mercado Pago
-    window.location.href = "https://mercadopago.com.ar";
+    // 3. Una vez guardado con seguridad, ahora sí vamos a Mercado Pago
+    setTimeout(() => {
+        window.location.href = "https://mercadopago.com.ar";
+    }, 100); 
 });
 </script>
 
